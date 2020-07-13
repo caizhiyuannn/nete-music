@@ -1,0 +1,68 @@
+<template>
+  <div class="menu">
+    <div class="user-profile">
+      <span class="material-icons-outlined">
+        person_outline
+      </span>
+      <span>未登陆</span>
+    </div>
+    <div class="menu-item-container">
+      <div class="found-music">
+        <span class="material-icons-outlined">music_note</span>
+        <span>发现音乐</span>
+      </div>
+      <div class="privatefm">
+        <span class="material-icons-outlined">
+          radio
+        </span>
+        <span>私人FM</span>
+      </div>
+      <div class="video">
+        <span class="material-icons-outlined">
+          slideshow
+        </span>
+        <span>视频</span>
+      </div>
+      <div class="friend">
+        <span class="material-icons-outlined">
+          people
+        </span>
+        <span>朋友</span>
+      </div>
+      <div class="my-music">
+        我的音乐
+      </div>
+    </div>
+
+    <div class="song-list">
+      <span>创建的歌单</span>
+      ...
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'menu',
+};
+</script>
+
+<style lang="scss" scoped>
+@import '../styles/common';
+
+.menu {
+  background-color: $menu-background;
+  color: $menu-color;
+  width: 200px;
+}
+
+.menu-item-container {
+  & div {
+    padding: 12px;
+    font-size: 12px;
+    &:hover {
+      background-color: #e7e7e7;
+    }
+  }
+}
+</style>
