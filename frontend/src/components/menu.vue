@@ -43,7 +43,7 @@
 
 <script>
 export default {
-  name: 'menu',
+  name: 'nete-menu',
 };
 </script>
 

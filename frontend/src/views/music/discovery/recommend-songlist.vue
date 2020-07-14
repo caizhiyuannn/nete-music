@@ -58,6 +58,7 @@ export default {
       & img {
         display: block;
         width: 100%;
+        border-radius: 4px;
       }
       & span {
         top: 0;

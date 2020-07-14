@@ -55,7 +55,7 @@ export default {
   .avator img {
     width: 60px;
     display: block;
-    border-radius: 6px;
+    border-radius: 3px;
   }
 
   .top {
