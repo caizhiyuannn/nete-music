@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Layout from '../views/layout';
-import FindMusic from '../views/music/find-music.vue';
+import Discovery from '../views/music/discovery';
 
 Vue.use(VueRouter);
 
@@ -12,13 +12,13 @@ const routes = [
     component: Layout,
     children: [
       {
-        path: '/find-music',
-        name: 'find-music',
-        component: FindMusic,
+        path: '/discovery',
+        name: 'discovery',
+        component: Discovery,
       },
       {
         path: '',
-        redirect: { name: 'find-music' },
+        redirect: { name: 'discovery' },
       },
     ],
   },
