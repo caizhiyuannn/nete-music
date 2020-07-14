@@ -1,30 +1,30 @@
 <template>
   <div class="menu">
     <div class="user-profile">
-      <span class="material-icons-outlined">
+      <span class="material-icons">
         person_outline
       </span>
       <span>未登陆</span>
     </div>
     <div class="menu-item-container">
       <div class="found-music">
-        <span class="material-icons-outlined">music_note</span>
+        <span class="material-icons">music_note</span>
         <span>发现音乐</span>
       </div>
       <div class="privatefm">
-        <span class="material-icons-outlined">
+        <span class="material-icons">
           radio
         </span>
         <span>私人FM</span>
       </div>
       <div class="video">
-        <span class="material-icons-outlined">
+        <span class="material-icons">
           slideshow
         </span>
         <span>视频</span>
       </div>
       <div class="friend">
-        <span class="material-icons-outlined">
+        <span class="material-icons">
           people
         </span>
         <span>朋友</span>
@@ -56,13 +56,28 @@ export default {
   width: 200px;
 }
 
+.user-profile {
+  display: flex;
+  align-items: center;
+
+  & span:nth-of-type(1) {
+    font-size: 40px;
+  }
+}
+
 .menu-item-container {
   & div {
-    padding: 12px;
+    padding: 8px 0;
     font-size: 12px;
+    display: flex;
+    align-items: center;
     &:hover {
       background-color: #e7e7e7;
     }
   }
+}
+
+.material-icons {
+  margin: 0 8px;
 }
 </style>
