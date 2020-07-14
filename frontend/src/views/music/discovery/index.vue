@@ -3,7 +3,7 @@
     <nete-banner />
     <nete-rsonglist />
     <nete-private-content />
-    <div class="newest"></div>
+    <nete-newsong />
     <div class="recommend-mv"></div>
     <div class="djprogram"></div>
   </div>
@@ -13,12 +13,14 @@
 import Banner from './banner';
 import RSongList from './recommend-songlist';
 import PrivateContent from './privatecontent';
+import NewSong from './newsong';
 export default {
   name: 'nete-discovery',
   components: {
     'nete-banner': Banner,
     'nete-rsonglist': RSongList,
     'nete-private-content': PrivateContent,
+    'nete-newsong': NewSong
   },
 };
 </script>

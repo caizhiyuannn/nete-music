@@ -1,6 +1,6 @@
 <template>
   <div class="private-content">
-    <h3>独家放送</h3>
+    <h3 style="padding: 0 8px">独家放送</h3>
     <div class="card-container">
       <div class="carditem" v-for="(content, idx) in lists" :key="idx">
         <div class="avator">
@@ -43,7 +43,6 @@ export default {
 .carditem {
   width: 25%;
   padding: 8px;
-
   .avator img {
     display: block;
     width: 100%;
