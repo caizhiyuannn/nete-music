@@ -54,6 +54,7 @@ export default {
   background-color: $menu-background;
   color: $menu-color;
   width: 200px;
+  flex-shrink: 0;
 }
 
 .user-profile {
