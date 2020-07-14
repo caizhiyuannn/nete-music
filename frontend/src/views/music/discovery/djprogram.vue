@@ -49,6 +49,7 @@ export default {
   cursor: pointer;
   &:hover {
     background-color: #f5f5f5;
+    border-radius: 4px;
   }
   .avator img {
     display: block;
@@ -68,6 +69,9 @@ export default {
 
     &:last-child {
       color: #9e9e9e;
+      &:hover {
+        color: #6f6f6f;
+      }
     }
   }
 }
