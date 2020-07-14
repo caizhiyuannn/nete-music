@@ -25,7 +25,9 @@
     </header>
     <main>
       <nete-menu />
-      <router-view></router-view>
+      <div class="content">
+        <router-view></router-view>
+      </div>
     </main>
     <footer>
       <nete-footer />
@@ -92,7 +94,14 @@ export default {
   }
   main {
     flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
   }
+  .content {
+    overflow: auto;
+  }
+
   footer {
     height: 60px;
     width: 100%;
