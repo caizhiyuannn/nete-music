@@ -1,6 +1,6 @@
 <template>
   <div class="recommend-songlist">
-    <h1>推荐歌单</h1>
+    <h3>推荐歌单</h3>
     <div class="cardcontainer">
       <div class="carditem" v-for="(song, ind) in songlists" :key="ind">
         <div class="card-avator">

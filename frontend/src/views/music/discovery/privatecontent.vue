@@ -1,5 +1,6 @@
 <template>
   <div class="private-content">
+    <h3>独家放送</h3>
     <div class="card-container">
       <div class="carditem" v-for="(content, idx) in lists" :key="idx">
         <div class="avator">
