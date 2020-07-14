@@ -5,7 +5,7 @@
     <nete-private-content />
     <nete-newsong />
     <nete-mv />
-    <div class="djprogram"></div>
+    <nete-djprogram />
   </div>
 </template>
 
@@ -15,6 +15,7 @@ import RSongList from './recommend-songlist';
 import PrivateContent from './privatecontent';
 import NewSong from './newsong';
 import MV from './mv';
+import DJProgram from './djprogram'
 export default {
   name: 'nete-discovery',
   components: {
@@ -23,6 +24,7 @@ export default {
     'nete-private-content': PrivateContent,
     'nete-newsong': NewSong,
     'nete-mv': MV,
+    'nete-djprogram': DJProgram
   },
 };
 </script>
