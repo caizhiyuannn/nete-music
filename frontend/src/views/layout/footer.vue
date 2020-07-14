@@ -1,54 +1,62 @@
 <template>
   <div class="footer">
-    <div class="payinfo">
-      <div class="playavatar"></div>
-      <div class="musicinfo">
-        <div class="music-name">
-          <span id="song-name">拇指姑娘</span> - <span>陈亦云</span>
-        </div>
-        <div class="music-progress">
-          <span>00:00</span> / <span>04:32</span>
-        </div>
-      </div>
-    </div>
-    <div class="playop">
-      <div class="like">
-        <span class="material-icons">
-          favorite_border
-        </span>
-      </div>
-      <div class="opaction">
-        <div class="pre">
-          <span class="material-icons">skip_previous</span>
-        </div>
-        <div class="action">
-          <span class="material-icons">play_circle_filled</span>
-        </div>
-        <div class="next">
-          <span class="material-icons">skip_next</span>
+    <nete-progress class="progress" />
+
+    <div class="playcontainer">
+      <div class="payinfo">
+        <div class="playavatar"></div>
+        <div class="musicinfo">
+          <div class="music-name">
+            <span id="song-name">拇指姑娘</span> - <span>陈亦云</span>
+          </div>
+          <div class="music-progress">
+            <span>00:00</span> / <span>04:32</span>
+          </div>
         </div>
       </div>
-      <div class="share">
-        <span class="material-icons">open_in_new</span>
+      <div class="playop">
+        <div class="like">
+          <span class="material-icons">
+            favorite_border
+          </span>
+        </div>
+        <div class="opaction">
+          <div class="pre">
+            <span class="material-icons">skip_previous</span>
+          </div>
+          <div class="action">
+            <span class="material-icons">play_circle_filled</span>
+          </div>
+          <div class="next">
+            <span class="material-icons">skip_next</span>
+          </div>
+        </div>
+        <div class="share">
+          <span class="material-icons">open_in_new</span>
+        </div>
       </div>
-    </div>
-    <div class="playmode">
-      <div class="loop">
-        <span class="material-icons">repeat</span>
-      </div>
-      <div class="playlist">
-        <span class="material-icons">playlist_play</span>
-      </div>
-      <div class="volume">
-        <span class="material-icons-outlined">volume_mute</span>
+      <div class="playmode">
+        <div class="loop">
+          <span class="material-icons">repeat</span>
+        </div>
+        <div class="playlist">
+          <span class="material-icons">playlist_play</span>
+        </div>
+        <div class="volume">
+          <span class="material-icons-outlined">volume_mute</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Progress from '@/components/progress';
 export default {
   name: 'nete-footer',
+  components: {
+    'nete-progress': Progress,
+  },
 };
 </script>
 
@@ -57,9 +65,17 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  & > div {
+  flex-direction: column;
+  -webkit-user-select: none;
+  user-select: none;
+  & .playcontainer {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .playcontainer > div {
     width: 300px;
   }
 }
