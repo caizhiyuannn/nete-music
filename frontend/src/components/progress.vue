@@ -6,7 +6,7 @@
     @mousedown="dragMouseDown"
   >
     <div class="progress-inner">
-      <div class="progress" ref="progress"></div>
+      <div :class="{ progress: true }" :style="progressCSS" ref="progress"></div>
       <div class="progress-btn-wrapper" ref="progress-btn-wrap">
         <div class="progress-btn"></div>
       </div>
@@ -17,10 +17,30 @@
 <script>
 export default {
   name: 'nete-progress',
+  props: {
+    progressPercent: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       timeout: null,
     };
+  },
+  computed: {
+    progressCSS: {
+      get: function() {
+        return {
+          width: `${this.progressPercent}%`,
+        };
+      },
+    },
+  },
+  watch: {
+    progressPercent: function(val) {
+      this.$refs.progress.style.width = `${val}%`;
+    },
   },
   methods: {
     progressClick(e) {
@@ -74,17 +94,23 @@ export default {
     align-items: center;
   }
   & .progress {
-    width: 30%;
     height: 100%;
     background-color: #d13c37;
   }
 }
 
+.progress-btn-wrapper {
+  position: relative;
+}
+
 .progress-btn {
+  position: absolute;
+  top: -7px;
+  left: -7px;
   background-color: #d13c37;
   border-radius: 50%;
   width: 13px;
   height: 13px;
-  transform: translateX(-7px);
+  // transform: translateX(-7px);
 }
 </style>

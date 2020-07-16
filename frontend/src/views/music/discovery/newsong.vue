@@ -3,7 +3,7 @@
     <h3 style="padding: 0 8px">最新音乐</h3>
     <div class="card-container">
       <div class="card-item" v-for="(song, idx) in songs" :key="idx">
-        <div class="avator">
+        <div class="avator" @click="clickMusic(song)">
           <img :src="song.picUrl" />
 
           <span class="material-icons">
@@ -22,12 +22,33 @@
 
 <script>
 import { getNewSong } from '@/api';
+import { mapState, mapActions } from 'vuex';
 export default {
   name: 'nete-newsong',
   data() {
     return {
       songs: [],
     };
+  },
+  methods: {
+    ...mapActions('music', ['startSong']),
+    clickMusic(song) {
+      const {
+        id,
+        name,
+        picUrl,
+        song: { artists, duration },
+        
+      } = song;
+
+      this.startSong({
+        id,
+        name,
+        picUrl,
+        artists,
+        duration
+      });
+    },
   },
   async created() {
     const { result } = await getNewSong();

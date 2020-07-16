@@ -1,16 +1,25 @@
 <template>
   <div class="footer">
-    <nete-progress class="progress" />
+    <nete-progress
+      class="progress"
+      :progressPercent="progress"
+      @percentChange="percentChange"
+    />
 
     <div class="playcontainer">
       <div class="payinfo">
-        <div class="playavatar"></div>
-        <div class="musicinfo">
+        <div class="playavatar" v-if="!objectIsEmpty(currentSong)">
+          <img :src="currentSong.picUrl" />
+        </div>
+        <div class="musicinfo" v-if="!objectIsEmpty(currentSong)">
           <div class="music-name">
-            <span id="song-name">拇指姑娘</span> - <span>陈亦云</span>
+            <span id="song-name">{{ currentSong.name }}</span>
+            -
+            <span>{{ currentSong.artists[0].name }}</span>
           </div>
           <div class="music-progress">
-            <span>00:00</span> / <span>04:32</span>
+            <span>{{ audio.currentTime | formatSecond }}</span> /
+            <span>{{ audio.maxTime | formatSecond }}</span>
           </div>
         </div>
       </div>
@@ -24,8 +33,10 @@
           <div class="pre">
             <span class="material-icons">skip_previous</span>
           </div>
-          <div class="action">
-            <span class="material-icons">play_circle_filled</span>
+          <div class="action" @click="playMusic">
+            <span class="material-icons">{{
+              audio.playing ? 'pause_circle_filled' : 'play_circle_filled'
+            }}</span>
           </div>
           <div class="next">
             <span class="material-icons">skip_next</span>
@@ -46,16 +57,98 @@
           <span class="material-icons-outlined">volume_mute</span>
         </div>
       </div>
+      <audio
+        ref="audio"
+        :src="audioSrc"
+        @play="onPlay"
+        @pause="onPause"
+        @timeupdate="onTimeUpdate"
+        @loadedmetadata="onLoadedMetaData"
+        autoplay
+      ></audio>
     </div>
   </div>
 </template>
 
 <script>
 import Progress from '@/components/progress';
+
+import { mapState } from 'vuex';
+import { objectIsEmpty } from '../../utils';
+
+function realFormatSecond(second) {
+  const secondType = typeof second;
+  if (secondType === 'number' || secondType === 'string') {
+    second = parseInt(second);
+    const hours = Math.floor(second / 3600);
+    second = second - hours * 3600;
+    const mimute = Math.floor(second / 60);
+    second = second - mimute * 60;
+    return ('0' + mimute).slice(-2) + ':' + ('0' + second).slice(-2);
+  } else {
+    return '00:00';
+  }
+}
+
 export default {
   name: 'nete-footer',
   components: {
     'nete-progress': Progress,
+  },
+  data() {
+    return {
+      progress: 0,
+      audio: {
+        playing: false,
+        currentTime: 0,
+        maxTime: 0,
+      },
+    };
+  },
+  computed: {
+    ...mapState('music', ['currentSong']),
+    audioSrc: {
+      get: function() {
+        const id = this.currentSong.id ? this.currentSong.id : '';
+        return id
+          ? `https://music.163.com/song/media/outer/url?id=${id}.mp3`
+          : '';
+      },
+    },
+  },
+  methods: {
+    objectIsEmpty: objectIsEmpty,
+    playMusic(e) {
+      if (this.audio.playing) {
+        this.$refs.audio.pause();
+      } else {
+        this.$refs.audio.play();
+      }
+    },
+    onTimeUpdate(res) {
+      this.audio.currentTime = res.target.currentTime;
+      this.progress = Math.floor(
+        (this.audio.currentTime / this.audio.maxTime) * 100
+      );
+    },
+    onLoadedMetaData(res) {
+      this.audio.maxTime = parseInt(res.target.duration);
+    },
+    percentChange(percent) {
+      const currentTime = Math.round(this.audio.maxTime * (percent / 100));
+      this.$refs.audio.currentTime = currentTime;
+    },
+    onPlay(e) {
+      this.audio.playing = true;
+    },
+    onPause(e) {
+      this.audio.playing = false;
+    },
+  },
+  filters: {
+    formatSecond(second = 0) {
+      return realFormatSecond(second);
+    },
   },
 };
 </script>
@@ -85,12 +178,15 @@ export default {
   flex-direction: row;
   align-items: center;
   margin-left: 8px;
-
   .playavatar {
     width: 42px;
     height: 42px;
     background-color: #f3f3f3;
     margin: 0 8px;
+    & img {
+      width: 100%;
+      border-radius: 4px;
+    }
 
     .music-progress span {
       color: #b5b5b5;
@@ -102,6 +198,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-items: center;
   & > div {
     display: block;
     margin: 0 16px;
@@ -119,6 +216,7 @@ export default {
     align-items: center;
     & div {
       margin: 0 12px;
+      cursor: pointer;
     }
     .pre span,
     .next span {
