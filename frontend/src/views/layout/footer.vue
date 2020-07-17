@@ -48,13 +48,20 @@
       </div>
       <div class="playmode">
         <div class="loop">
-          <span class="material-icons">repeat</span>
+          <i class="material-icons">repeat</i>
         </div>
         <div class="playlist">
-          <span class="material-icons">playlist_play</span>
+          <i class="material-icons">playlist_play</i>
         </div>
         <div class="volume">
-          <span class="material-icons-outlined">volume_mute</span>
+          <i class="material-icons" @click="volume_off_op">{{
+            volume.value === 0 ? 'volume_off' : 'volume_up'
+          }}</i>
+          <nete-progress
+            :progressPercent="volume.value"
+            class="volume-progress"
+            @percentChange="volumeChange"
+          />
         </div>
       </div>
       <audio
@@ -103,6 +110,10 @@ export default {
         currentTime: 0,
         maxTime: 0,
       },
+      volume: {
+        value: 50,
+        swap: 50,
+      },
     };
   },
   computed: {
@@ -140,9 +151,24 @@ export default {
     },
     onPlay(e) {
       this.audio.playing = true;
+      this.$refs.audio.volume = this.volume.value / 100;
     },
     onPause(e) {
       this.audio.playing = false;
+    },
+    volumeChange(vol) {
+      this.volume.value = vol;
+      this.volume.swap = vol;
+      this.$refs.audio.volume = vol / 100;
+    },
+    volume_off_op() {
+      if (this.volume.value > 0) {
+        this.volume.swap = this.volume.value;
+        this.volume.value = 0;
+      } else {
+        this.volume.value = this.volume.swap;
+      }
+      this.$refs.audio.volume = this.volume.value / 100;
     },
   },
   filters: {
@@ -187,7 +213,6 @@ export default {
       width: 100%;
       border-radius: 4px;
     }
-
     .music-progress span {
       color: #b5b5b5;
     }
@@ -249,7 +274,7 @@ export default {
   margin-right: 16px;
   & > div {
     margin: 0 10px;
-    & span,
+    & i,
     img {
       display: flex;
       text-align: center;
@@ -257,6 +282,18 @@ export default {
       align-items: center;
       width: 16px;
       height: 16px;
+    }
+  }
+  .volume {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & i {
+      cursor: pointer;
+    }
+    .volume-progress {
+      margin-left: 8px;
+      width: 100px;
     }
   }
 }

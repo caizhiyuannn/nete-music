@@ -7,37 +7,37 @@
       <span>未登陆</span>
     </div>
     <div class="menu-item-container">
-      <div class="found-music">
+      <router-link to="/discovery" tag="div" active-class="isactive" class="menu-link">
         <span class="material-icons">music_note</span>
         <span>发现音乐</span>
-      </div>
-      <div class="privatefm">
+      </router-link>
+      <router-link to="/radio" tag="div" active-class="isactive" class="menu-link">
         <span class="material-icons">
           radio
         </span>
         <span>私人FM</span>
-      </div>
-      <div class="video">
+      </router-link>
+      <router-link to="/video" tag="div" active-class="isactive" class="menu-link">
         <span class="material-icons">
           slideshow
         </span>
         <span>视频</span>
-      </div>
-      <div class="friend">
+      </router-link>
+      <router-link to="/people" tag="div" active-class="isactive" class="menu-link">
         <span class="material-icons">
           people
         </span>
         <span>朋友</span>
-      </div>
-      <div class="my-music">
+      </router-link>
+      <!-- <div class="my-music">
         我的音乐
-      </div>
+      </div> -->
     </div>
 
-    <div class="song-list">
+    <!-- <div class="song-list">
       <span>创建的歌单</span>
       ...
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -80,5 +80,15 @@ export default {
 
 .material-icons {
   margin: 0 8px;
+}
+
+.menu-link {
+  cursor: pointer;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+.isactive {
+  background-color: #e2e2e2;
 }
 </style>

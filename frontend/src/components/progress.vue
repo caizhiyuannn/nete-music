@@ -105,12 +105,12 @@ export default {
 
 .progress-btn {
   position: absolute;
-  top: -7px;
-  left: -7px;
+  top: -6px;
+  left: -4px;
   background-color: #d13c37;
   border-radius: 50%;
-  width: 13px;
-  height: 13px;
+  width: 11px;
+  height: 11px;
   // transform: translateX(-7px);
 }
 </style>
