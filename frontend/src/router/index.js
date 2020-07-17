@@ -17,6 +17,16 @@ const routes = [
         component: Discovery,
       },
       {
+        path: '/radio',
+        name: 'radio',
+        component: () => import('@/views/radio'),
+      },
+      {
+        path: '/video',
+        name: 'video',
+        component: () => import('@/views/video'),
+      },
+      {
         path: '',
         redirect: { name: 'discovery' },
       },
