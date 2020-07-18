@@ -81,10 +81,10 @@ export default {
 
 <style lang="scss" scoped>
 .progressbar {
-  height: 3px;
+  height: 2px;
   width: 100%;
   cursor: pointer;
-  background-color: #a79494;
+  background-color: #FAFAFA;
   position: relative;
   //   border: 1px solid red;
   & .progress-inner {
@@ -105,12 +105,12 @@ export default {
 
 .progress-btn {
   position: absolute;
-  top: -6px;
+  top: -5px;
   left: -4px;
   background-color: #d13c37;
   border-radius: 50%;
-  width: 11px;
-  height: 11px;
+  width: 10px;
+  height: 10px;
   // transform: translateX(-7px);
 }
 </style>

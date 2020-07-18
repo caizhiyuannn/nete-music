@@ -10,10 +10,10 @@
             play_arrow
           </span>
         </div>
-        <div class="top">{{ idx < 9 ? `0${idx + 1}` : idx + 1 }}</div>
+        <div class="top">{{ 9 > idx ? `0${idx + 1}` : idx + 1 }}</div>
         <div class="info">
           <span>{{ song.name }}</span>
-          <span>{{ song.song.artists[0].name }}</span>
+          <span>{{ song.song.artists.map(v=>v.name).join(' / ') }}</span>
         </div>
       </div>
     </div>
@@ -22,7 +22,7 @@
 
 <script>
 import { getNewSong } from '@/api';
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 export default {
   name: 'nete-newsong',
   data() {
@@ -32,6 +32,7 @@ export default {
   },
   methods: {
     ...mapActions('music', ['startSong']),
+    ...mapMutations('music', ['addPlayList', 'addHistoryList']),
     clickMusic(song) {
       const {
         id,
@@ -41,13 +42,17 @@ export default {
         
       } = song;
 
-      this.startSong({
+      const music = {
         id,
         name,
         picUrl,
         artists,
         duration
-      });
+      }
+      this.addPlayList(music);
+      this.addHistoryList(music);
+      this.startSong(music);
+
     },
   },
   async created() {

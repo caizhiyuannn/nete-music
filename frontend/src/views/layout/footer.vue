@@ -15,7 +15,9 @@
           <div class="music-name">
             <span id="song-name">{{ currentSong.name }}</span>
             -
-            <span>{{ currentSong.artists[0].name }}</span>
+            <span>{{
+              currentSong.artists.map((v) => v.name).join(' / ')
+            }}</span>
           </div>
           <div class="music-progress">
             <span>{{ audio.currentTime | formatSecond }}</span> /
@@ -35,7 +37,7 @@
           </div>
           <div class="action" @click="playMusic">
             <span class="material-icons">{{
-              audio.playing ? 'pause_circle_filled' : 'play_circle_filled'
+              playStatus ? 'pause_circle_filled' : 'play_circle_filled'
             }}</span>
           </div>
           <div class="next">
@@ -47,10 +49,11 @@
         </div>
       </div>
       <div class="playmode">
-        <div class="loop">
-          <i class="material-icons">repeat</i>
+        <div class="loop" @click="loopModeChange">
+          <i class="material-icons">{{ loop.loopmode[loop.index] }}</i>
+          <span class="hits">{{ loop.hits[loop.index] }}</span>
         </div>
-        <div class="playlist">
+        <div class="playlist" @click="$emit('playlistClick', true)">
           <i class="material-icons">playlist_play</i>
         </div>
         <div class="volume">
@@ -81,21 +84,7 @@
 import Progress from '@/components/progress';
 
 import { mapState } from 'vuex';
-import { objectIsEmpty } from '../../utils';
-
-function realFormatSecond(second) {
-  const secondType = typeof second;
-  if (secondType === 'number' || secondType === 'string') {
-    second = parseInt(second);
-    const hours = Math.floor(second / 3600);
-    second = second - hours * 3600;
-    const mimute = Math.floor(second / 60);
-    second = second - mimute * 60;
-    return ('0' + mimute).slice(-2) + ':' + ('0' + second).slice(-2);
-  } else {
-    return '00:00';
-  }
-}
+import { objectIsEmpty, realFormatSecond } from '../../utils';
 
 export default {
   name: 'nete-footer',
@@ -109,6 +98,12 @@ export default {
         playing: false,
         currentTime: 0,
         maxTime: 0,
+      },
+      loop: {
+        // loop: 列表循环，单曲循环，顺序播放，随机播放
+        hits: ['列表循环', '单曲循环', '顺序播放', '随机播放'],
+        loopmode: ['repeat', 'repeat_one', 'replay', 'shuffle'],
+        index: 0,
       },
       volume: {
         value: 50,
@@ -124,6 +119,14 @@ export default {
         return id
           ? `https://music.163.com/song/media/outer/url?id=${id}.mp3`
           : '';
+      },
+    },
+    playStatus: {
+      get: function() {
+        if (Object.keys(this.currentSong).length === 0) {
+          this.audio.playing = false;
+        }
+        return this.audio.playing;
       },
     },
   },
@@ -169,6 +172,12 @@ export default {
         this.volume.value = this.volume.swap;
       }
       this.$refs.audio.volume = this.volume.value / 100;
+    },
+    loopModeChange() {
+      // loop: 列表循环，单曲循环，顺序播放，随机播放
+      // 0, 1, 2, 3
+      this.loop.index = (this.loop.index + 1) % 4;
+      console.log(this.loop.index);
     },
   },
   filters: {
@@ -283,6 +292,30 @@ export default {
       width: 16px;
       height: 16px;
     }
+  }
+
+  .loop {
+    cursor: pointer;
+    position: relative;
+    .hits {
+      display: none;
+    }
+    &:hover .hits {
+      display: block;
+      position: absolute;
+      top: -25px;
+      left: -18px;
+      padding: 1px;
+      background-color: white;
+      width: max-content;
+      height: max-content;
+      box-shadow: 0 0 2px 1px #f3f3f3;
+      z-index: 1;
+      min-width: 50px;
+    }
+  }
+  .playlist {
+    cursor: pointer;
   }
   .volume {
     display: flex;

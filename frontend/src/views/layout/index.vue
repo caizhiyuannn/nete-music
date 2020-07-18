@@ -30,14 +30,17 @@
       </div>
     </main>
     <footer>
-      <nete-footer />
+      <nete-footer @playlistClick="playListOpen = !playListOpen" />
     </footer>
+
+    <nete-playlist :show="playListOpen"/>
   </div>
 </template>
 
 <script>
 import Menu from '@/components/menu';
 import Navigate from '@/components/navigate';
+import PlayList from '@/components/playlist';
 import Footer from './footer';
 export default {
   name: 'Layout',
@@ -45,7 +48,13 @@ export default {
     'nete-menu': Menu,
     'nete-navigate': Navigate,
     'nete-footer': Footer,
+    'nete-playlist': PlayList,
   },
+  data() {
+    return {
+      playListOpen: false
+    }
+  }
 };
 </script>
 
@@ -55,6 +64,7 @@ export default {
 #layout {
   display: flex;
   flex-direction: column;
+  position: relative;
   width: 100%;
   height: 100%;
 
@@ -93,10 +103,10 @@ export default {
     width: 100%;
   }
   main {
-    flex-grow: 1;
     overflow: hidden;
     display: flex;
     flex-direction: row;
+    height: calc(100% - 110px);
   }
   .content {
     overflow: auto;
@@ -107,6 +117,12 @@ export default {
     width: 100%;
     background-color: $footer-background;
     color: $footer-color;
+    z-index: 10;
+    position: relative;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    
   }
 
   .right-side {
