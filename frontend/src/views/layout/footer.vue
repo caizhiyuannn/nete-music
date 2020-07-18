@@ -32,7 +32,7 @@
           </span>
         </div>
         <div class="opaction">
-          <div class="pre">
+          <div class="pre" @click="toPrevSong()">
             <span class="material-icons">skip_previous</span>
           </div>
           <div class="action" @click="playMusic">
@@ -40,7 +40,7 @@
               playStatus ? 'pause_circle_filled' : 'play_circle_filled'
             }}</span>
           </div>
-          <div class="next">
+          <div class="next" @click="toNextSong()">
             <span class="material-icons">skip_next</span>
           </div>
         </div>
@@ -50,7 +50,7 @@
       </div>
       <div class="playmode">
         <div class="loop" @click="loopModeChange">
-          <i class="material-icons">{{ loop.loopmode[loop.index] }}</i>
+          <i class="material-icons">{{ loop.playmode }}</i>
           <span class="hits">{{ loop.hits[loop.index] }}</span>
         </div>
         <div class="playlist" @click="$emit('playlistClick', true)">
@@ -70,6 +70,8 @@
       <audio
         ref="audio"
         :src="audioSrc"
+        :loop="isLoop"
+        @ended="onEnded"
         @play="onPlay"
         @pause="onPause"
         @timeupdate="onTimeUpdate"
@@ -83,7 +85,7 @@
 <script>
 import Progress from '@/components/progress';
 
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import { objectIsEmpty, realFormatSecond } from '../../utils';
 
 export default {
@@ -104,6 +106,7 @@ export default {
         hits: ['列表循环', '单曲循环', '顺序播放', '随机播放'],
         loopmode: ['repeat', 'repeat_one', 'replay', 'shuffle'],
         index: 0,
+        playmode: 'repeat',
       },
       volume: {
         value: 50,
@@ -112,7 +115,10 @@ export default {
     };
   },
   computed: {
-    ...mapState('music', ['currentSong']),
+    ...mapState('music', {
+      'currentSong': 'currentSong',
+      'isLoop': 'loop',
+    }),
     audioSrc: {
       get: function() {
         const id = this.currentSong.id ? this.currentSong.id : '';
@@ -131,6 +137,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations('music', ['toNextSong', 'toPrevSong','setPlayMode', 'autoPlayNext']),
     objectIsEmpty: objectIsEmpty,
     playMusic(e) {
       if (this.audio.playing) {
@@ -176,8 +183,18 @@ export default {
     loopModeChange() {
       // loop: 列表循环，单曲循环，顺序播放，随机播放
       // 0, 1, 2, 3
-      this.loop.index = (this.loop.index + 1) % 4;
-      console.log(this.loop.index);
+      const index = (this.loop.index + 1) % 4;
+      this.loop.playmode = this.loop.loopmode[index];
+      this.loop.index = index;
+      this.setPlayMode(this.loop.playmode);
+    },
+    onEnded(e) {
+      console.log(e);
+      const self = this;
+      setTimeout(() => {
+        console.log('change to next');
+        self.autoPlayNext();
+      }, 1000);
     },
   },
   filters: {

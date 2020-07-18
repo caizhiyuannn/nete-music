@@ -1,11 +1,12 @@
-import {MusicPlayController} from '@/utils';
+import { MusicPlayController } from '@/utils';
 
 const state = {
   prevSong: {},
   currentSong: {},
   playList: [],
   historyList: [],
-  playmode: 'repeat'
+  playmode: 'repeat',
+  loop: false,
 };
 
 const mutations = {
@@ -13,7 +14,9 @@ const mutations = {
     state.currentSong = payload;
   },
   addPlayList(state, payload) {
-    console.log(state.playList);
+    if(state.playList.length <= 0) state.loop = true;
+    else state.loop = false;
+
     const isExists = state.playList.some((v) => v.id === payload.id);
     if (!isExists) {
       state.playList = [...state.playList, payload];
@@ -31,50 +34,62 @@ const mutations = {
     state.currentSong = Object.assign({});
   },
   toNextSong(state) {
-    if (state.musicList.length === 0) return;
+    if (state.playList.length === 0) return;
     // 下一首
     switch (state.playmode) {
       case 'repeat_one':
       case 'replay':
       case 'repeat': {
         // repeat
-        const idx = repeat_index(state.musicList, state.currentSong);
-        state.currentSong = state.musicList[idx];
+        const idx = repeat_index(state.playList, state.currentSong);
+        state.currentSong = state.playList[idx];
         break;
       }
       case 'shuffle': {
         // shuffle
-        const [prevSong, currentSong] = shuffle(state.musicList, state.currentSong);
+        const [prevSong, currentSong] = shuffle(
+          state.playList,
+          state.currentSong
+        );
         state.currentSong = currentSong;
         break;
       }
     }
   },
+  setPlayMode(state, mode) {
+    if(mode === 'repeat_one') state.loop = true;
+    else state.loop = false;
+    state.playmode = mode;
+  },
 
   toPrevSong(state) {
-    let currentIDX = state.musicList.findIndex(
+    let currentIDX = state.playList.findIndex(
       (v) => v.id === state.currentSong.id
     );
-    const idx = reverse(currentIDX, state.musicList.length)
-    state.currentSong = state.musicList[idx]
+    const idx = reverse(currentIDX, state.playList.length);
+    state.currentSong = state.playList[idx];
   },
 
   autoPlayNext(state) {
-    if (state.musicList.length === 0) return;
+    if (state.playList.length === 0) return;
+
+    if(state.playList.length <= 1 && state.playmode !== 'replay') state.loop = true;
+    else state.loop = false;
     // 下一首
-    switch (state.mode) {
+    switch (state.playmode) {
       case 'repeat': {
         // repeat
 
-        const idx = state.repeat_index();
-        state.currentSong = state.musicList[idx];
+        const idx = repeat_index(state.playList, state.currentSong);
+        state.currentSong = state.playList[idx];
+
         break;
       }
       case 'repeat_one': {
         // repeat_one
         // stay currentSong
         if (Object.keys(state.currentSong) === 0 && state.musicLength > 0)
-          state.currentSong = state.musicList[0];
+          state.currentSong = state.playList[0];
         else {
           const swap = state.currentSong;
           state.currentSong = {};
@@ -84,33 +99,30 @@ const mutations = {
       }
       case 'replay': {
         // replay
-        let currentIDX = state.musicList.findIndex(
+        let currentIDX = state.playList.findIndex(
           (v) => v.id === state.currentSong.id
         );
-        if (currentIDX + 1 === state.musicList.length) break;
+        if (currentIDX + 1 === state.playList.length) break;
         else {
-          const idx = (currentIDX + 1) % state.musicList.length;
-          state.currentSong = state.musicList[idx];
+          const idx = (currentIDX + 1) % state.playList.length;
+          state.currentSong = state.playList[idx];
         }
         break;
       }
       case 'shuffle': {
         // shuffle
-        const [pre, current] = shuffle(state.musicList, state.currentSong);
+        const [pre, current] = shuffle(state.playList, state.currentSong);
         state.currentSong = current;
         break;
       }
     }
-
-  }
-
+  },
 };
 
 function reverse(value, max) {
   const i = value % max;
-  const r = (real_max - i) % real_max;
-  return real_max - r - 1
-
+  const r = (max - i) % max;
+  return max - r - 1;
 }
 
 const actions = {
@@ -122,35 +134,29 @@ const actions = {
 
 const getters = {};
 
-
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function shuffle(musicList, currentSong) {
+function shuffle(playList, currentSong) {
   let currentIDX = null;
   let idx = null;
 
   if (currentSong != null) {
-    currentIDX = musicList.findIndex(
-      (v) => v.id === currentSong.id
-    );
+    currentIDX = playList.findIndex((v) => v.id === currentSong.id);
   }
 
   while (true) {
-    if (musicLength === currentIDX) break;
-    idx = getRandomInt(0, musicLength);
+    if (playList.length === currentIDX) break;
+    idx = getRandomInt(0, playList.length);
     if (idx !== currentIDX) break;
   }
-  return [currentSong, musicList[idx]]
-
+  return [currentSong, playList[idx]];
 }
 
-function repeat_index(musicList, currentSong) {
-  let currentIDX = musicList.findIndex(
-    (v) => v.id === currentSong.id
-  );
-  return (currentIDX + 1) % musicLength;
+function repeat_index(playList, currentSong) {
+  let currentIDX = playList.findIndex((v) => v.id === currentSong.id);
+  return (currentIDX + 1) % playList.length;
 }
 
 export default {
