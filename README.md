@@ -5,6 +5,8 @@
 感谢 [NeteaseCloudMusicApi](https://binaryify.github.io/NeteaseCloudMusicApi) 后端大佬API贡献！
 
 
+![](./images/discovery.jpg)
+
 ```
 nete-music
 ├── LICENSE
