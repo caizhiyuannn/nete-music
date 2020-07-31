@@ -66,7 +66,6 @@ export default {
     
   },
   created() {
-    console.log('create');
     this.$parent && this.$parent.calcItems();
   },
   destroyed() {
