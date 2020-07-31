@@ -180,10 +180,6 @@ export default {
     height: 6px;
     border-radius: 50%;
     background-color: #e6e6e6;
-
-    &:hover {
-      background-color: #d13c37;
-    }
   }
 }
 
