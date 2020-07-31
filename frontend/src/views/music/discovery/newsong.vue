@@ -113,6 +113,8 @@ export default {
     &::after {
       content: '';
       position: absolute;
+      top: 0;
+      left: 0;
       width: 26px;
       height: 26px;
       background-color: rgba($color: #fff, $alpha: 0.3);
