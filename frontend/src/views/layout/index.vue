@@ -7,10 +7,10 @@
           <button id="min"></button>
           <button id="fullscreen"></button>
         </div>
-        <span class="material-icons">
+        <span class="material-icons" @click="$router.back()">
           arrow_back_ios
         </span>
-        <span class="material-icons">
+        <span class="material-icons" @click="$router.forward()">
           arrow_forward_ios
         </span>
       </div>
@@ -92,6 +92,7 @@ export default {
       font-size: 13px;
       display: flex;
       margin-left: 16px;
+      cursor: pointer;
       &:nth-of-type(2) {
         margin-right: 8px;
       }
@@ -118,6 +119,8 @@ export default {
   }
   .content {
     overflow: auto;
+    width: 100%;
+    height: 100%;
   }
 
   footer {

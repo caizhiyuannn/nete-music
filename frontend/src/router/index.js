@@ -19,12 +19,18 @@ const routes = [
       {
         path: '/radio',
         name: 'radio',
-        component: () => import('@/views/radio'),
+        component: () => import('@/views/PlayList.vue'),
       },
       {
         path: '/video',
         name: 'video',
         component: () => import('@/views/video'),
+      },
+      {
+        path: '/playlist',
+        name: 'playlist',
+        component: () => import('@/views/PlayList.vue'),
+        props: true,
       },
       {
         path: '',

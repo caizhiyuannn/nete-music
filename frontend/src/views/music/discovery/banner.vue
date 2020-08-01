@@ -7,6 +7,9 @@
         class="banner-img"
       >
         <img :src="banner.imageUrl" alt="" />
+        <span class="banner-typeTitle" v-if="!!banner.typeTitle">{{
+          banner.typeTitle
+        }}</span>
       </CarouselItem>
     </Carousel>
   </div>
@@ -42,10 +45,24 @@ export default {
   height: 230px;
   overflow: hidden;
 }
+.banner-img {
+  overflow: hidden;
+  border-radius: 8px;
+}
 .banner-img img {
   //   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 8px;
+}
+
+.banner-typeTitle {
+  background-color: #ca4b4d;
+  color: white;
+  padding: 2px 8px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-bottom-right-radius: 8px;
+  border-top-left-radius: 8px;
 }
 </style>
