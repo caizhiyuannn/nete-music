@@ -26,6 +26,7 @@ export default {
   async created() {
     const { result } = await getPrivateContent();
     this.lists = result;
+    this.$emit('loaded', true);
   },
 };
 </script>

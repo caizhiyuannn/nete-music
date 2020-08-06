@@ -1,48 +1,50 @@
 <template>
   <div class="playlist" v-show="show">
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>总共{{ playList.length }}首</th>
-          <th>收藏全部</th>
-          <th>
-            <span
-              class="clearPlayList"
-              @click="$store.commit('music/clearPlayList')"
-              >清空</span
-            >
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(list, idx) in playList"
-          :key="`list-${idx}`"
-          @click="currentClick = `list-${idx}`"
-          :class="{ active: currentClick === `list-${idx}` }"
-          @dblclick="currentDBClick = `list-${idx}`"
-        >
-          <td :class="{ dbClickActive: dbclickActive(list, idx) }">
-            <i class="material-icons" v-show="dbclickActive(list, idx)"
-              >pause</i
-            >
-          </td>
-          <td :class="{ dbClickActive: dbclickActive(list, idx) }">
-            {{ list.name }}
-          </td>
-          <td :class="{ dbClickActive: dbclickActive(list, idx) }">
-            {{ list.artists.map((v) => v.name).join(' / ') }}
-          </td>
-          <td>{{ (list.duration / 1000) | formatSecond }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>总共{{ playList.length }}首</th>
+            <th>收藏全部</th>
+            <th>
+              <span
+                class="clearPlayList"
+                @click="$store.commit('music/clearPlayList')"
+                >清空</span
+              >
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(list, idx) in playList"
+            :key="`list-${idx}`"
+            @click="currentClick = `list-${idx}`"
+            :class="{ active: currentClick === `list-${idx}` }"
+            @dblclick="dbclick(list, idx)"
+          >
+            <td :class="{ dbClickActive: dbclickActive(list, idx) }">
+              <i class="material-icons" v-show="dbclickActive(list, idx)"
+                >pause</i
+              >
+            </td>
+            <td :class="{ dbClickActive: dbclickActive(list, idx) }">
+              {{ list.name }}
+            </td>
+            <td :class="{ dbClickActive: dbclickActive(list, idx) }">
+              {{ list.artists.map((v) => v.name).join(' / ') }}
+            </td>
+            <td>{{ (list.duration / 1000) | formatSecond }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import { realFormatSecond } from '@/utils';
 export default {
   name: 'nete-playlist',
@@ -56,17 +58,16 @@ export default {
   data() {
     return {
       currentClick: '',
-      currentDBClick: '',
     };
   },
   methods: {
-    dbclick(e) {
-      e.target.style.color = 'red';
+    ...mapMutations('music', ['setCurrentSong']),
+    dbclick(song, idx) {
+      this.setCurrentSong(song);
+      // this.currentDBClick = `list-${idx}`;
     },
     dbclickActive(list, idx) {
-      return (
-        this.currentDBClick === `list-${idx}` || list.id === this.currentSong.id
-      );
+      return list.id === this.currentSong.id;
     },
   },
   computed: {
@@ -90,22 +91,31 @@ export default {
   background: white;
   // box-shadow: -1px 0px 1px 1px #f4f4f4;
   -webkit-box-shadow: -1px 0 1px -1px #f4f4f4;
-	-moz-box-shadow: -1px 0 1px -1px #f4f4f4;
-	box-shadow: -1px 0 1px -1px #f4f4f4;
+  -moz-box-shadow: -1px 0 1px -1px #f4f4f4;
+  box-shadow: -1px 0 1px -1px #f4f4f4;
   z-index: 5;
   padding: 8px 0;
 }
 
 .playlist {
+  .table-container {
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+  }
   table {
     table-layout: fixed;
     border-collapse: collapse;
     width: 100%;
+    position: relative;
 
     thead tr {
       border-bottom: 1px solid #ededee;
       th {
         text-align: left;
+        position: sticky;
+        top: 0;
+        background-color: white;
       }
       & th:first-child {
         width: 8px;

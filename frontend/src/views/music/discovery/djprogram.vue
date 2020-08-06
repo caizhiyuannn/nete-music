@@ -27,6 +27,7 @@ export default {
   async created() {
     const { result } = await getDJProgram();
     this.djlists = result;
+    this.$emit('loaded', true)
   },
 };
 </script>

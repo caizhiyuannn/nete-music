@@ -1,10 +1,10 @@
 <template>
   <div class="menu">
     <div class="user-profile">
-      <span class="material-icons">
+      <!-- <span class="material-icons">
         person_outline
       </span>
-      <span>未登陆</span>
+      <span>未登陆</span> -->
     </div>
     <div class="menu-item-container">
       <router-link to="/discovery" tag="div" active-class="isactive" class="menu-link">
@@ -22,12 +22,6 @@
           slideshow
         </span>
         <span>视频</span>
-      </router-link>
-      <router-link to="/people" tag="div" active-class="isactive" class="menu-link">
-        <span class="material-icons">
-          people
-        </span>
-        <span>朋友</span>
       </router-link>
       <!-- <div class="my-music">
         我的音乐

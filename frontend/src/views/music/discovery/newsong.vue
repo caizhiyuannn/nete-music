@@ -58,6 +58,7 @@ export default {
   async created() {
     const { result } = await getNewSong();
     this.songs = result;
+    this.$emit('loaded', true);
   },
 };
 </script>

@@ -33,6 +33,7 @@ export default {
   async created() {
     const { banners } = await getBanner();
     this.banners = banners;
+    this.$emit('loaded', true)
   },
 };
 </script>

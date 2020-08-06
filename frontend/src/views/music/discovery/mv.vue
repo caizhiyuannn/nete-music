@@ -62,6 +62,7 @@ export default {
   async created() {
     const { result } = await getMV();
     this.mvlists = result;
+    this.$emit('loaded', true)
   },
 };
 </script>

@@ -14,12 +14,15 @@ const mutations = {
     state.currentSong = payload;
   },
   addPlayList(state, payload) {
-    if(state.playList.length <= 0) state.loop = true;
+    if (state.playList.length <= 0) state.loop = true;
     else state.loop = false;
 
     const isExists = state.playList.some((v) => v.id === payload.id);
     if (!isExists) {
       state.playList = [...state.playList, payload];
+    }
+    if (Object.keys(state.currentSong).length < 1) {
+      state.currentSong = state.playList[0];
     }
   },
   addHistoryList(state, payload) {
@@ -57,7 +60,7 @@ const mutations = {
     }
   },
   setPlayMode(state, mode) {
-    if(mode === 'repeat_one') state.loop = true;
+    if (mode === 'repeat_one') state.loop = true;
     else state.loop = false;
     state.playmode = mode;
   },
@@ -73,7 +76,8 @@ const mutations = {
   autoPlayNext(state) {
     if (state.playList.length === 0) return;
 
-    if(state.playList.length <= 1 && state.playmode !== 'replay') state.loop = true;
+    if (state.playList.length <= 1 && state.playmode !== 'replay')
+      state.loop = true;
     else state.loop = false;
     // 下一首
     switch (state.playmode) {

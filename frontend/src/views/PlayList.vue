@@ -19,10 +19,12 @@
           >
         </div>
         <div class="action">
-          <button>播放全部</button>
-          <button>收藏</button>
-          <button>分享</button>
-          <button>下载全部</button>
+          <ButtonGroup class="action-buttons">
+            <button @click="playAll">播放全部</button>
+            <button @click="addToPlaylist">
+              <i class="material-icons">add</i>
+            </button>
+          </ButtonGroup>
         </div>
         <div class="desc">
           <div class="tags">
@@ -57,9 +59,12 @@
               <tr
                 v-for="(d, idx) in getPlayListValue(playlist, 'tracks')"
                 :key="idx"
+                @dblclick="playSong(d, idx)"
               >
                 <td style="padding-right:8px">{{ idx | insertZero }}</td>
-                <td>{{ d.name }}</td>
+                <td :class="{ dbClickActive: dbclickActive(d, idx) }">
+                  {{ d.name }}
+                </td>
                 <td>{{ d.ar.map((v) => v.name) | joins(' / ') }}</td>
                 <td>{{ d.al.name }}</td>
                 <td>{{ d.dt | formatSecond }}</td>
@@ -137,8 +142,10 @@
 <script>
 import { getPlayList, getCommentList } from '@/api';
 import { NeteTabs, NeteTabPanel } from '@/components/tabs';
+import { ButtonGroup } from '@/components/button-group';
 import { realFormatSecond } from '@/utils';
 import moment from 'moment';
+import { mapState, mapActions, mapMutations } from 'vuex';
 
 // props 0 歌单 ，1 专辑
 export default {
@@ -146,6 +153,7 @@ export default {
   components: {
     NeteTabs,
     NeteTabPanel,
+    ButtonGroup,
   },
   props: {
     id: {
@@ -159,7 +167,17 @@ export default {
       commentList: {},
     };
   },
+  computed: {
+    ...mapState('music', ['currentSong'])
+  },
   methods: {
+    ...mapActions('music', ['startSong']),
+    ...mapMutations('music', [
+      'addPlayList',
+      'addHistoryList',
+      'clearPlayList',
+      'setCurrentSong',
+    ]),
     getPlayListValue(obj, key) {
       let value = obj;
       const keys = key.split('.');
@@ -172,17 +190,46 @@ export default {
       }
       return value;
     },
+    addToPlaylist() {
+      const { tracks } = this.playlist;
+      const songs = tracks.map((song) => {
+        const { id, name, ar, dt, al } = song;
+        this.addPlayList({
+          id,
+          name,
+          picUrl: al.picUrl,
+          artists: ar,
+          duration: dt,
+        });
+      });
+    },
+    playAll() {
+      this.clearPlayList();
+      this.addToPlaylist();
+    },
+    playSong(song, idx) {
+      const { id, name, ar, dt, al } = song;
+      song = {
+        id,
+        name,
+        picUrl: al.picUrl,
+        artists: ar,
+        duration: dt,
+      };
+      this.addPlayList(song);
+      this.setCurrentSong(song);
+    },
+    dbclickActive(list, idx) {
+      return list.id === this.currentSong.id;
+    },
   },
   async created() {
-    console.log(this.id);
     if (!!this.id) {
       const { playlist } = await getPlayList(this.id);
-      console.log(playlist.creator.avatarUrl);
       playlist &&
         Object.keys(playlist).forEach((key) =>
           this.$set(this.playlist, key, playlist[key])
         );
-      console.log(this.playlist.tags.join('/'));
     }
   },
   async mounted() {
@@ -367,5 +414,9 @@ tbody tr:hover {
     display: block;
     margin-right: 8px;
   }
+}
+
+.dbClickActive {
+  color: #d13c37;
 }
 </style>

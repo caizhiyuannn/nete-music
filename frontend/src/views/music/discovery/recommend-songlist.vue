@@ -35,6 +35,7 @@ export default {
   async created() {
     const { result } = await getPersonalized();
     this.songlists = result;
+    this.$emit('loaded', true);
   },
 };
 </script>
