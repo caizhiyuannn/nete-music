@@ -156,3 +156,16 @@ export class MusicPlayController {
     return (currentIDX + 1) % this.musicLength;
   }
 }
+
+export function getPlayListValue(obj, key) {
+  let value = obj;
+  const keys = key.split('.');
+  for (const key in keys) {
+    if (keys.hasOwnProperty(key)) {
+      const element = keys[key];
+      value = value[element];
+      if (!value) break;
+    }
+  }
+  return value;
+}

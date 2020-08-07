@@ -75,49 +75,10 @@
         <nete-tab-panel
           :name="`评论 (${getPlayListValue(playlist, 'commentCount')})`"
         >
-          <div class="comments">
-            <div>
-              <h3>精彩评论</h3>
-              <div
-                v-for="(hc, idx) in getPlayListValue(
-                  commentList,
-                  'hotComments'
-                )"
-                :key="idx"
-                class="hotComments-info"
-              >
-                <img :src="hc.user.avatarUrl" />
-                <div class="hotComments-desc">
-                  <span class="comment-nickname">{{ hc.user.nickname }}: </span>
-                  <span>{{ hc.content }}</span>
-                  <span>{{ hc.time | formatDateTime }}</span>
-                </div>
-              </div>
-            </div>
-            <div>
-              <h3>最新评论</h3>
-              <div
-                v-for="(hc, idx) in getPlayListValue(commentList, 'comments')"
-                :key="idx"
-                class="hotComments-info"
-              >
-                <img :src="hc.user.avatarUrl" />
-                <div class="hotComments-desc">
-                  <span class="comment-nickname">{{ hc.user.nickname }}: </span>
-                  <span>{{ hc.content }}</span>
-                  <div class="comment-replied" v-if="hc.beReplied.length > 0">
-                    <span v-for="(rep, idx) in hc.beReplied" :key="idx">
-                      <span class="comment-nickname"
-                        >@{{ rep.user.nickname }}:
-                      </span>
-                      <span>{{ rep.content }}</span>
-                    </span>
-                  </div>
-                  <span>{{ hc.time | formatDateTime }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <NeteComment
+            :commentList="getPlayListValue(commentList, 'comments')"
+            :hotComments="getPlayListValue(commentList, 'hotComments')"
+          />
         </nete-tab-panel>
         <nete-tab-panel name="收藏者">
           <div class="subscribers">
@@ -143,9 +104,10 @@
 import { getPlayList, getCommentList } from '@/api';
 import { NeteTabs, NeteTabPanel } from '@/components/tabs';
 import { ButtonGroup } from '@/components/button-group';
-import { realFormatSecond } from '@/utils';
-import moment from 'moment';
+import NeteComment from '@/components/comment';
+import { realFormatSecond, getPlayListValue } from '@/utils';
 import { mapState, mapActions, mapMutations } from 'vuex';
+import moment from 'moment';
 
 // props 0 歌单 ，1 专辑
 export default {
@@ -154,6 +116,7 @@ export default {
     NeteTabs,
     NeteTabPanel,
     ButtonGroup,
+    NeteComment,
   },
   props: {
     id: {
@@ -168,7 +131,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('music', ['currentSong'])
+    ...mapState('music', ['currentSong']),
   },
   methods: {
     ...mapActions('music', ['startSong']),
@@ -178,18 +141,7 @@ export default {
       'clearPlayList',
       'setCurrentSong',
     ]),
-    getPlayListValue(obj, key) {
-      let value = obj;
-      const keys = key.split('.');
-      for (const key in keys) {
-        if (keys.hasOwnProperty(key)) {
-          const element = keys[key];
-          value = value[element];
-          if (!value) break;
-        }
-      }
-      return value;
-    },
+    getPlayListValue: getPlayListValue,
     addToPlaylist() {
       const { tracks } = this.playlist;
       const songs = tracks.map((song) => {
@@ -265,9 +217,6 @@ export default {
     },
     insertZero(val) {
       return val < 10 ? `0${val}` : val;
-    },
-    formatDateTime(val) {
-      return moment(val).format('MM月DD日 HH:mm');
     },
   },
 };
@@ -355,45 +304,6 @@ tbody tr:nth-of-type(2n + 1) {
 
 tbody tr:hover {
   background-color: #f2f2f3;
-}
-
-.comments {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.hotComments-info {
-  display: flex;
-  align-items: center;
-  & img {
-    display: block;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    margin-right: 16px;
-  }
-
-  .hotComments-desc > span:last-of-type {
-    display: block;
-    margin-top: 8px;
-    color: #c0c0c0;
-  }
-}
-
-.comment-nickname {
-  color: #5983b0;
-}
-
-.hotComments-desc {
-  width: 100%;
-  border-bottom: 1px solid #f3f3f3;
-  padding: 16px 0;
-}
-
-.comment-replied {
-  padding: 6px;
-  background-color: #f5f5f5;
 }
 
 .subscribers {

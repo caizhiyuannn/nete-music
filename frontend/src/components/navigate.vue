@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'nete-navigate',
+  name: 'NeteNavigate',
 };
 </script>
 
@@ -12,13 +12,13 @@ export default {
 @import '../styles/common';
 
 .navigate {
+  flex-grow: 1;
   display: flex;
   width: 100%;
   height: 100%;
   flex-direction: row;
   justify-content: space-between;
   padding: 0 36px;
-  background-color: $header-right-background;
   color: $header-right-color;
 }
 </style>

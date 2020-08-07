@@ -1,15 +1,15 @@
 <template>
   <div class="video">
-    <NeteLoading />
+    <MVDetail />
   </div>
 </template>
 
 <script>
-import NeteLoading from '@/components/loading/Loading';
+import MVDetail from './mv-detail';
 export default {
   name: 'nete-video',
   components: {
-    NeteLoading,
+    MVDetail,
   },
 };
 </script>

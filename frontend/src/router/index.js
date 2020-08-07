@@ -7,6 +7,18 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/mv-detail/:id',
+    name: 'MVDetail',
+    component: () => import('@/views/video/mv-detail.vue'),
+    props: true,
+  },
+  {
+    path: '/video-detail/:id',
+    name: 'VideoDetail',
+    component: () => import('@/views/video/video-detail.vue'),
+    props: true,
+  },
+  {
     path: '/',
     name: 'Layout',
     component: Layout,

@@ -7,6 +7,7 @@
           class="card-avator"
           @mouseover="copywriteOver(idx)"
           @mouseleave="mouseLeave"
+          @click="$router.push({ name: 'MVDetail', params: { id: mv.id } })"
         >
           <img :src="mv.picUrl" />
 
@@ -62,7 +63,7 @@ export default {
   async created() {
     const { result } = await getMV();
     this.mvlists = result;
-    this.$emit('loaded', true)
+    this.$emit('loaded', true);
   },
 };
 </script>
