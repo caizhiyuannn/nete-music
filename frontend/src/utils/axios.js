@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://api.mtnhao.com';
+const BASE_URL = '//api.mtnhao.com';
 
 export const request = axios.create({
   baseURL: BASE_URL,
