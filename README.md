@@ -23,12 +23,16 @@ nete-music
 
 ## 技术栈
 
+UI 纯手撸，提升自己对各组件实现原理理解能力！
+
+图标基本使用了 material-icons
+
 - vue2 vuecli 创建
 - vue-router
 - vuex
 - scss
 - axios
-- xgplay
+- xgplayer 西瓜视频出品，真香
 - es6
 
 ## 使用说明
@@ -61,7 +65,7 @@ npm start
 - [ ] 分页显示
 - [x] 播放 mv
 - [ ] 查看作者信息
-- [ ] 私人fm
+- [ ] 私人 fm
 - [ ] 歌词播放
 - [ ] 用户登陆
 - [ ] 搜索功能
