@@ -7,17 +7,27 @@
       <span>未登陆</span> -->
     </div>
     <div class="menu-item-container">
-      <router-link to="/discovery" tag="div" active-class="isactive" class="menu-link">
+      <router-link
+        to="/discovery"
+        tag="div"
+        active-class="isactive"
+        class="menu-link"
+      >
         <span class="material-icons">music_note</span>
         <span>发现音乐</span>
       </router-link>
-      <router-link to="/radio" tag="div" active-class="isactive" class="menu-link">
+      <!-- <router-link to="/radio" tag="div" active-class="isactive" class="menu-link">
         <span class="material-icons">
           radio
         </span>
         <span>私人FM</span>
-      </router-link>
-      <router-link to="/video" tag="div" active-class="isactive" class="menu-link">
+      </router-link> -->
+      <router-link
+        to="/video"
+        tag="div"
+        active-class="isactive"
+        class="menu-link"
+      >
         <span class="material-icons">
           slideshow
         </span>
