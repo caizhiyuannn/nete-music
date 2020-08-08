@@ -1,10 +1,10 @@
 <template>
   <div class="menu">
     <div class="user-profile">
-      <!-- <span class="material-icons">
+      <span class="material-icons">
         person_outline
       </span>
-      <span>未登陆</span> -->
+      <span>未登陆</span>
     </div>
     <div class="menu-item-container">
       <router-link
