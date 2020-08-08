@@ -53,7 +53,7 @@
           <i class="material-icons">{{ loop.playmode }}</i>
           <span class="hits">{{ loop.hits[loop.index] }}</span>
         </div>
-        <div class="playlist" @click="$emit('playlistClick', true)">
+        <div class="playlist" @click="$emit('click-playlist', true)">
           <i class="material-icons">playlist_play</i>
         </div>
         <div class="volume">
@@ -116,8 +116,8 @@ export default {
   },
   computed: {
     ...mapState('music', {
-      'currentSong': 'currentSong',
-      'isLoop': 'loop',
+      currentSong: 'currentSong',
+      isLoop: 'loop',
     }),
     audioSrc: {
       get: function() {
@@ -137,7 +137,12 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('music', ['toNextSong', 'toPrevSong','setPlayMode', 'autoPlayNext']),
+    ...mapMutations('music', [
+      'toNextSong',
+      'toPrevSong',
+      'setPlayMode',
+      'autoPlayNext',
+    ]),
     objectIsEmpty: objectIsEmpty,
     playMusic(e) {
       if (this.audio.playing) {

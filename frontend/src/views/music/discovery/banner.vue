@@ -49,6 +49,7 @@ export default {
 .banner-img {
   overflow: hidden;
   border-radius: 8px;
+  cursor: pointer;
 }
 .banner-img img {
   //   position: absolute;

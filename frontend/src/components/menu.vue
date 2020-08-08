@@ -21,7 +21,7 @@
         <span class="material-icons">
           slideshow
         </span>
-        <span>视频</span>
+        <span>最新MV</span>
       </router-link>
       <!-- <div class="my-music">
         我的音乐

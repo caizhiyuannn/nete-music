@@ -10,7 +10,7 @@
       </div>
     </main>
     <footer>
-      <nete-footer @playlistClick="playListOpen = !playListOpen" />
+      <nete-footer @click-playlist="playListOpen = !playListOpen" />
     </footer>
 
     <nete-playlist :show="playListOpen" />
@@ -34,7 +34,7 @@ export default {
     return {
       playListOpen: false,
     };
-  },
+  }
 };
 </script>
 

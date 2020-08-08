@@ -3,7 +3,12 @@
     <h3 style="padding: 0 8px">独家放送</h3>
     <div class="card-container">
       <div class="carditem" v-for="(content, idx) in lists" :key="idx">
-        <div class="avator">
+        <div
+          class="avator"
+          @click="
+            $router.push({ name: 'MVDetail', params: { id: content.id } })
+          "
+        >
           <img :src="content.sPicUrl" />
         </div>
         <div class="content">
